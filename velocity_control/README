@@ -1,0 +1,20 @@
+velocity_control: The template for the velocity control module
+
+The goal of the velocity_control module is to control the robot according to a
+given command (received over ROS).
+
+Here is the definition of this module:
+	Input: Linear speed (m/s) and Angular speed (rad or deg/s) and time (1 sec default) (should copy turtlesim)
+	Parameters: configuration file containing maximums for both linear and angular speeds
+	Output: Command to any car (using PWM, or on-off-control, ...)
+	State machine: Initial (End of trajectory, at the boot), Run (running normally)
+		Pause (waiting to resume), Emergency (errors, fatal errors, kill-switch)
+	Tests:  1) Straight forward at 0.2m/s (during 1s)
+		2) Straight backward at 0.2m/s (during 1s)
+		3) turn wheels without driving
+		4) Turn in circle to the left (during 1s, at 0.2m/s, 20deg/s)
+		5) Turn in circle to the right (during 1s, at 0.2m/s, -20deg/s)
+		6) Turn in circle to the left, driving backward (during 1s, at -0.2m/s, 20deg/s)
+		7) Turn in circle to the right, driving backward (during 1s, at -0.2m/s, -20deg/s)
+		1-7bis) All tests from 1 to 7 but for 5s
+		1-7ter) All tests from 1 to 7 at full linear/angular speed for 3s
