@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package>
+	<name>velocity_control</name>
+	<version>0.7.0</version>
+	<description>The velocity_control package</description>
+
+	<maintainer email="astups@gmail.com">astups</maintainer>
+
+	<license>BSD 3-clauses</license>
+
+	<url type="website">http://astups.forumactif.com/</url>
+	<url type="repository">https://github.com/astups/template_modules/</url>
+ 	<url type="bugtracker">https://github.com/astups/template_modules/issues</url>
+
+  	<author email="raphael.lallement@laposte.net">Raphaël Lallement</author>
+  	<author email="lechalupe.julien@gmail.com">Julien Lechalupé</author>
+  	<author email="arnal.robin@gmail.com">Robin Arnal</author>
+
+	<buildtool_depend>catkin</buildtool_depend>
+	<build_depend>roscpp</build_depend>
+	<run_depend>roscpp</run_depend>
+	<build_depend>message_generation</build_depend>
+	<run_depend>message_runtime</run_depend>
+
+
+<!--	The export tag contains other, unspecified, tags -->
+<!--	<export>-->
+<!--		You can specify that this package is a metapackage here: -->
+<!--		<metapackage/> -->
+
+<!--		Other tools can request additional information be placed here -->
+
+<!--	</export>-->
+</package>

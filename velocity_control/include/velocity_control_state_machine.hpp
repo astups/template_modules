@@ -10,7 +10,7 @@
 #include <state_machine.hpp>
 
 //Define the possible events
-enum event: unsigned int {start, stop, pause, resume, emergency, reinit};
+enum event: unsigned int {start, stop, paused, resume, emergency, reinit};
 
 STATE(Init);
 //EMPTY_ONENTRY(Init);
@@ -66,7 +66,7 @@ INIT_STATE(Init);
 const std::map<State*, std::map<event, State*>> StateMachine::_transition_table({
 	{&Init, {{start, &Run},
 		{emergency, &Emergency}}},
-	{&Run, {{pause, &Pause},
+	{&Run, {{paused, &Pause},
 		{stop, &Init},
 		{emergency, &Emergency}}},
 	{&Pause, {{resume, &Run},
@@ -84,7 +84,7 @@ void test(){
 
 	//Nothing
 	state_machine.process(stop);
-	state_machine.process(pause);
+	state_machine.process(paused);
 	state_machine.process(resume);
 
 	//Emergency and back
@@ -111,7 +111,7 @@ void test(){
 	sleep(2);
 
 	//Pause
-	state_machine.process(pause);
+	state_machine.process(paused);
 
 	//Nothing
 	state_machine.process(start);
@@ -119,21 +119,21 @@ void test(){
 
 	//Run and back
 	state_machine.process(resume);
-	state_machine.process(pause);
+	state_machine.process(paused);
 	sleep(2);
 
 	//Init and back
 	state_machine.process(stop);
 	state_machine.process(start);
 	sleep(2);
-	state_machine.process(pause);
+	state_machine.process(paused);
 
 	//Emergency and back
 	state_machine.process(emergency);
 	state_machine.process(reinit);
 	state_machine.process(start);
 	sleep(2);
-	state_machine.process(pause);
+	state_machine.process(paused);
 
 	//Emergency
 	state_machine.process(emergency);
@@ -141,7 +141,7 @@ void test(){
 	//Nothing
 	state_machine.process(start);
 	state_machine.process(stop);
-	state_machine.process(pause);
+	state_machine.process(paused);
 	state_machine.process(resume);
 	state_machine.process(emergency);
 

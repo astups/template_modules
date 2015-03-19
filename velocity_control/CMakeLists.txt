@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(velocity_control CXX C)
 
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "5")
+set(CPACK_PACKAGE_VERSION_MINOR "7")
 set(CPACK_PACKAGE_VERSION_PATCH "0")
 
 set(APP_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
@@ -18,12 +18,19 @@ find_package(Threads)
 #link_directories(${Boost_LIBRARY_DIRS})
 #set(LIBS ${LIBS} ${Boost_LIBRARIES})
 
+find_package(catkin REQUIRED COMPONENTS
+	std_msgs
+	roscpp
+	message_generation
+)
 
-
-
+find_package(simplified_ros REQUIRED)
 
 #Add header files
-include_directories(${PROJECT_SOURCE_DIR})
+include_directories(
+	${catkin_INCLUDE_DIRS}
+	${simplified_ros_INCLUDE_DIRS}
+	${PROJECT_SOURCE_DIR}/include)
 
 #Add a library
 #add_library(<lib> SHARED <source>)
@@ -31,13 +38,33 @@ include_directories(${PROJECT_SOURCE_DIR})
 #set(LIBS <lib> ${LIBS})
 #set_target_properties(<lib> PROPERTIES VERSION ${APP_VERSION}) #To apply the version number
 
+#Generate messages in the 'msg' folder
+add_message_files(
+	FILES
+	command.msg
+	event.msg
+)
+
+#Generate added messages and services with any dependencies listed here
+generate_messages(
+	DEPENDENCIES
+	std_msgs  # Or other packages containing msgs
+)
+
+#Catkin specific configuration
+catkin_package(
+	DEPENDS message_runtime
+)
+
 #Add an executable
-add_executable(main main.cpp)
-target_link_libraries(main ${LIBS} ${CMAKE_THREAD_LIBS_INIT})
-set_target_properties(main PROPERTIES VERSION ${APP_VERSION})
+add_executable(velocity_control src/velocity_control.cpp)
+target_link_libraries(velocity_control ${catkin_LIBRARIES} ${template_ros_LIBRARIES})
+set_target_properties(velocity_control PROPERTIES VERSION ${APP_VERSION})
 
-
-
+#TODO Create an automatic test if feasible in ros
+#add_executable(test_state_machine src/test_state_machine.cpp)
+#target_link_libraries(test_state_machine ${LIBS} ${CMAKE_THREAD_LIBS_INIT})
+#set_target_properties(test_state_machine PROPERTIES VERSION ${APP_VERSION})
 
 
 #Documentation
