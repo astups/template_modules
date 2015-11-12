@@ -24,7 +24,11 @@ find_package(catkin REQUIRED COMPONENTS
 	message_generation
 )
 
+find_package( wiringPi REQUIRED )
+
+#find_package(SFML REQUIRED system window graphics)
 find_package(simplified_ros REQUIRED)
+
 
 #Add header files
 include_directories(
@@ -56,10 +60,29 @@ catkin_package(
 	DEPENDS message_runtime
 )
 
+include_directories(${CATKIN_INCLUDE_DIRS} ${wiringPi_INCLUDE_DIRS})
+
+# Find SFML (for Gamepad control)
+# You can find FindSFML.cmake here:
+# https://raw.githubusercontent.com/SFML/SFML/master/cmake/Modules/FindSFML.cmake
+
+#include_directories(${SFML_INCLUDE_DIR})
+#
+#add_executable(velocity_control_remote_commander src/velocity_control_remote_commander.cpp)
+#target_link_libraries(velocity_control_remote_commander ${catkin_LIBRARIES} ${simplified_ros_LIBRARIES} ${SFML_LIBRARIES})
+#set_target_properties(velocity_control_remote_commander PROPERTIES VERSION ${APP_VERSION})
+
+
 #Add an executable
 add_executable(velocity_control src/velocity_control.cpp)
-target_link_libraries(velocity_control ${catkin_LIBRARIES} ${template_ros_LIBRARIES})
+target_link_libraries(velocity_control ${catkin_LIBRARIES} ${simplified_ros_LIBRARIES} ${wiringPi_LIBRARIES})
 set_target_properties(velocity_control PROPERTIES VERSION ${APP_VERSION})
+
+add_executable(velocity_control_tester src/velocity_control_tester.cpp)
+target_link_libraries(velocity_control_tester ${catkin_LIBRARIES} ${simplified_ros_LIBRARIES})
+set_target_properties(velocity_control_tester PROPERTIES VERSION ${APP_VERSION})
+
+
 
 #TODO Create an automatic test if feasible in ros
 #add_executable(test_state_machine src/test_state_machine.cpp)

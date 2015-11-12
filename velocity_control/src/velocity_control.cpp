@@ -8,7 +8,7 @@
 #include <velocity_control/command.h>
 #include <velocity_control/event.h>
 
-//#include <velocity_control_state_machine.hpp>
+#include <velocity_control_state_machine.hpp>
 
 void commandCallback(const boost::shared_ptr<velocity_control::command>& data)
 {
@@ -17,7 +17,8 @@ void commandCallback(const boost::shared_ptr<velocity_control::command>& data)
 		return;
 	}
 
-	ROS_INFO(" [Receive] <%f, %f>   - %fs - %s", data->linear, data->angular, data->duration, (data->override?"override":"no-override"));
+	ROS_INFO(" [Receive] <%f, %f>\t-\t%fs\t-\t%s", data->linear, data->angular, data->duration, (data->override?"override":"no-override"));
+	Run.pushAction((*data));
 }
 
 void eventCallback(const boost::shared_ptr<velocity_control::event>& data)
@@ -32,19 +33,34 @@ void eventCallback(const boost::shared_ptr<velocity_control::event>& data)
 	ROS_INFO(" [Receive] event:%s", event.c_str());
 	
 	
-//	if(event=="pause"){
-//		state_machine.process(paused);
-//	} else if(event=="resume"){
-//		state_machine.process(resume);
-//	} else if(event=="stop"){
-//		state_machine.process(stop);
-//	} else if(event=="emergency"){
-//		state_machine.process(emergency);
-//	} else if(event=="reinit"){
-//		state_machine.process(reinit);
-//	} else {
-//		ROS_ERROR("Wrong event message: %s", event.c_str());
-//	}
+	if(event=="pause")
+	{
+		state_machine.process(paused);
+	}
+	else if(event=="resume")
+	{
+		state_machine.process(resume);
+	} 
+	else if(event=="stop")
+	{
+		state_machine.process(stop);
+	} 
+	else if(event=="emergency")
+	{
+		state_machine.process(emergency);
+	} 
+	else if(event=="start")
+	{
+		state_machine.process(start);
+	}
+	else if(event=="reinit")
+	{
+		state_machine.process(reinit);
+	} 
+	else 
+	{
+		ROS_ERROR("Wrong event message: %s", event.c_str());
+	}
 }
 
 int main(int argc, char** argv)
@@ -74,7 +90,8 @@ int main(int argc, char** argv)
 	{
 		ros::spinOnce();
 		
-		sleep(1);
+		// 25ms sleep to give CU some rest
+		usleep(25000);
 	}
 	
 	return 0;
