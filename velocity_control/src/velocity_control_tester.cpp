@@ -103,7 +103,12 @@ int main(int argc, char ** argv)
 	}
 	else if ( mode == 2 )
 	{
+		eventData.event = "start";
+		pubEvent.publish(eventData);
+		ROS_INFO("Send START event...");
+		usleep(1000000);
 
+		ROS_INFO("Send commands...");
 		// All test performed here are specified in velocity_control.odt
 		// Please refer to that document for more informations about
 		// the tests

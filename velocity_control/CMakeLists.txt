@@ -28,12 +28,13 @@ find_package( wiringPi REQUIRED )
 
 #find_package(SFML REQUIRED system window graphics)
 find_package(simplified_ros REQUIRED)
-
+find_package(libvelocity_control REQUIRED)
 
 #Add header files
 include_directories(
 	${catkin_INCLUDE_DIRS}
 	${simplified_ros_INCLUDE_DIRS}
+	${libvelocity_control_INCLUDE_DIRS}
 	${PROJECT_SOURCE_DIR}/include)
 
 #Add a library

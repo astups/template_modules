@@ -133,9 +133,9 @@ void Run::action()
 		if ( queueSize != 0 )
 		{
 			// Pop order
-			ROS_INFO("a %d",_commandQueue.size());
+			ROS_INFO("a %lu",_commandQueue.size());
 			cmd = _commandQueue.front();
-			ROS_INFO("b %d",_commandQueue.size());
+			ROS_INFO("b %lu",_commandQueue.size());
 			_commandQueue.pop_front();
 			_commandQueue_mutex.unlock();
 			
